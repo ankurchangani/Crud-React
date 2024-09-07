@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from 'react';
 import getdata from '../../js/main.js';
 import ViewData from '../ViewData/ViewData.jsx';
@@ -22,33 +20,20 @@ const FormStorage = () => {
         setFormInput({ ...FormInput, [name]: value });
     };
 
-
-    
     const handleEdit = (id) => {
         const singlerec = Storage.find(item => item.id === id);
-        console.log("itemToEdit", singlerec);
-       
         setFormInput(singlerec); 
-        
-    }
+    };
     
-    // Remove data 
     const handleRemove = (id) => {
         const removeStorage = Storage.filter(item => item.id !== id); 
         setStorage(removeStorage); 
     };
-    
 
     const handleSubmit = (e) => {
         e.preventDefault();
-    
-        // const newFormInput = { ...FormInput, id: Math.floor(Math.random() * 10000) };
-
         const newFormInput = { ...FormInput, id: uuidv4() };
-
-
         setStorage([...Storage, newFormInput]);
-    
         setFormInput({
             Name: '',
             Contact: '',
@@ -58,48 +43,49 @@ const FormStorage = () => {
         });
     };
     
-
     useEffect(() => {
         localStorage.setItem('Storage', JSON.stringify(Storage));
     }, [Storage]);
 
     return (
-        <div style={{ minHeight: '100vh' }}>
-            <div className="container">
-                <div className="row">
-                    <form className="row g-3" onSubmit={handleSubmit}>
-                        <div className="col-md-6">
-                            <label htmlFor="name" className="form-label">Name</label>
-                            <input type="text" className="form-control border-primary" id="name" name="Name" value={FormInput.Name} onChange={handleForm} />
+        <div className="min-h-screen bg-gray-100">
+            <div className="container mx-auto py-10">
+                <div className="bg-white p-8 shadow-xl rounded-lg">
+                    <form className="space-y-6" onSubmit={handleSubmit}>
+                        <div className="grid grid-cols-2 gap-6">
+                            <div>
+                                <label htmlFor="name" className="block text-sm font-medium text-teal-700">Name</label>
+                                <input type="text" className="form-control border border-teal-500 w-full p-2 rounded-md focus:ring-2 focus:ring-teal-500" id="name" name="Name" value={FormInput.Name} onChange={handleForm} />
+                            </div>
+                            <div>
+                                <label htmlFor="contact" className="block text-sm font-medium text-teal-700">Contact</label>
+                                <input type="number" className="form-control border border-teal-500 w-full p-2 rounded-md focus:ring-2 focus:ring-teal-500" id="contact" name="Contact" value={FormInput.Contact} onChange={handleForm} />
+                            </div>
                         </div>
 
-                        <div className="col-md-6">
-                            <label htmlFor="contact" className="form-label">Contact</label>
-                            <input type="number" className="form-control border-primary" id="contact" name="Contact" value={FormInput.Contact} onChange={handleForm} />
+                        <div className="grid grid-cols-2 gap-6">
+                            <div>
+                                <label htmlFor="inputEmail4" className="block text-sm font-medium text-teal-700">Email</label>
+                                <input type="email" className="form-control border border-teal-500 w-full p-2 rounded-md focus:ring-2 focus:ring-teal-500" id="inputEmail4" name="Email" value={FormInput.Email} onChange={handleForm} />
+                            </div>
+                            <div>
+                                <label htmlFor="inputPassword4" className="block text-sm font-medium text-teal-700">Password</label>
+                                <input type="password" className="form-control border border-teal-500 w-full p-2 rounded-md focus:ring-2 focus:ring-teal-500" id="inputPassword4" name="Pass" value={FormInput.Pass} onChange={handleForm} />
+                            </div>
                         </div>
 
-                        <div className="col-md-6">
-                            <label htmlFor="inputEmail4" className="form-label">Email</label>
-                            <input type="email" className="form-control border-primary" id="inputEmail4" name="Email" value={FormInput.Email} onChange={handleForm} />
+                        <div>
+                            <label htmlFor="inputAddress" className="block text-sm font-medium text-teal-700">Address</label>
+                            <input type="text" className="form-control border border-teal-500 w-full p-2 rounded-md focus:ring-2 focus:ring-teal-500" id="inputAddress" placeholder="1234 Main St" name="Address" value={FormInput.Address} onChange={handleForm} />
                         </div>
 
-                        <div className="col-md-6">
-                            <label htmlFor="inputPassword4" className="form-label">Password</label>
-                            <input type="password" className="form-control border-primary" id="inputPassword4" name="Pass" value={FormInput.Pass} onChange={handleForm} />
-                        </div>
-
-                        <div className="col-12">
-                            <label htmlFor="inputAddress" className="form-label">Address</label>
-                            <input type="text" className="form-control border-primary" id="inputAddress" placeholder="1234 Main St" name="Address" value={FormInput.Address} onChange={handleForm} />
-                        </div>
-
-                        <div className="col-12">
-                            <button type="submit" className="btn btn-primary">Submit</button>
+                        <div>
+                            <button type="submit" className="px-5 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50">Submit</button>
                         </div>
                     </form>
                 </div>
 
-                <ViewData data={Storage} handleEdit = {handleEdit} handleRemove = {handleRemove} />
+                <ViewData data={Storage} handleEdit={handleEdit} handleRemove={handleRemove} />
             </div>
         </div>
     );
