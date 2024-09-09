@@ -14,6 +14,8 @@ const FormStorage = () => {
 
     const [Storage, setStorage] = useState(getdata());
 
+ 
+
     const handleForm = (e) => {
         let name = e.target.name;
         let value = e.target.value;
@@ -22,18 +24,33 @@ const FormStorage = () => {
 
     const handleEdit = (id) => {
         const singlerec = Storage.find(item => item.id === id);
+        
         setFormInput(singlerec); 
     };
+    
     
     const handleRemove = (id) => {
         const removeStorage = Storage.filter(item => item.id !== id); 
         setStorage(removeStorage); 
     };
 
+    
     const handleSubmit = (e) => {
         e.preventDefault();
-        const newFormInput = { ...FormInput, id: uuidv4() };
-        setStorage([...Storage, newFormInput]);
+        if(FormInput.id){
+            let rec  = Storage ;
+            let newRecord = rec.map((rec)=> {
+                if(rec.id === FormInput.id){
+                    return FormInput;
+                } else {
+                    return rec;
+                }
+            });
+            setStorage(newRecord);
+        } else {
+            const newFormInput = { ...FormInput, id: uuidv4() };
+            setStorage([...Storage, newFormInput]);
+        }
         setFormInput({
             Name: '',
             Contact: '',
@@ -42,6 +59,7 @@ const FormStorage = () => {
             Address: '',
         });
     };
+
     
     useEffect(() => {
         localStorage.setItem('Storage', JSON.stringify(Storage));
